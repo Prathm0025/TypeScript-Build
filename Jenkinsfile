@@ -30,7 +30,7 @@ pipeline {
 
         stage('Run Compiled Output') {
             when {
-                expression { currentBuild.result == 'SUCCESS' } // Check if the current result is 'SUCCESS'
+                expression { currentBuild.currentResult == 'SUCCESS' }
             }
             steps {
                 script {
@@ -42,7 +42,7 @@ pipeline {
 
         stage('Push Artifact') {
             when {
-                expression { currentBuild.result == 'SUCCESS' } // Check if the build succeeded
+                expression { currentBuild.currentResult == 'SUCCESS' }
             }
             steps {
                 script {
@@ -59,7 +59,7 @@ pipeline {
 
         stage('Rollback') {
             when {
-                expression { currentBuild.result == 'FAILURE' } // Check if the current result is 'FAILURE'
+                expression { currentBuild.currentResult == 'FAILURE' }
             }
             steps {
                 script {
