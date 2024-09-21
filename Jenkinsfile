@@ -26,7 +26,7 @@ pipeline {
                 script {
                     // Build the project and handle errors
                     catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                        sh 'npm run build'
+                        sh 'npm run build --verbose'
                     }
                 }
             }
