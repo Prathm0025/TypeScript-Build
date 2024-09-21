@@ -56,7 +56,7 @@ pipeline {
                     sh 'git remote set-url origin https://${Token}@github.com/Prathm0025/TypeScript-Build.git'
                     sh 'git add dist/*' // Add your build artifacts from the correct folder
                     sh 'git commit -m "Add new build artifacts"'
-                    sh 'git push origin dev'
+                    sh 'git push origin master'
                 }
             }
         }
