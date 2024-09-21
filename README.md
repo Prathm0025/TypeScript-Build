@@ -1,16 +1,15 @@
-### Prerequisites
+# Jenkins CI/CD Setup for Unity WebGL Builds
+
+## Prerequisites
 
 This guide provides a step-by-step process to install Jenkins, Java 18, Node.js 18, and configure a GitHub token in Jenkins credentials on an Ubuntu server.
 
-# Jenkins CI/CD Setup for Unity WebGL Builds
-
-Make sure your Ubuntu system is updated:
+# Installation and Setup
+Run the following commands to install Java 18, Jenkins, Node.js 18, and configure Jenkins with a GitHub token.
 
 ```bash
+#Make sure your Ubuntu system is updated:
 sudo apt update && sudo apt upgrade -y
-
-## Installation and Setup
-Run the following commands to install Java 18, Jenkins, Node.js 18, and configure Jenkins with a GitHub token.
 
 # Install Java 18
 sudo apt install openjdk-18-jdk -y
