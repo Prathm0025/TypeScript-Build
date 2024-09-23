@@ -2,85 +2,40 @@ pipeline {
     agent any
 
     environment {
-        Token = credentials('GITHUB_TOKEN')  // Fetch GitHub token from Jenkins credentials
+        UNITY_PATH = "/path/to/Unity/Editor/Unity" // or Unity Hub path or Docker path
+        BUILD_PATH = "Build/WebGL"
     }
 
     stages {
-        stage('Clone Repository') {
+        stage('Checkout') {
             steps {
-                git url: 'https://github.com/Prathm0025/TypeScript-Build.git', branch: 'master'
+                // Checkout source code from Git
+                git url: 'https://github.com/TypeScript-Build.git', branch: 'master'
             }
         }
 
-        stage('Setup Environment') {
+        stage('Unity WebGL Build') {
             steps {
-                script {
-                    // Install dependencies
-                    sh 'npm install'
-                }
+                // Unity command line build for WebGL
+                sh """
+                ${UNITY_PATH} -batchmode -quit -nographics -logFile -projectPath $(pwd) \
+                -buildTarget WebGL -executeMethod BuildScript.PerformBuild -output ${BUILD_PATH}
+                """
             }
         }
 
-        stage('Build') {
+        stage('Archive WebGL Build') {
             steps {
-                script {
-                    // Build the project and handle errors
-                    catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                        sh 'npm run build --verbose'
-                    }
-                }
+                // Archive the WebGL build artifacts
+                archiveArtifacts artifacts: "${BUILD_PATH}/**", allowEmptyArchive: false
             }
         }
-
-        stage('Run Compiled Output') {
-            when {
-                expression { currentBuild.currentResult == 'SUCCESS' }
-            }
-            steps {
-                script {
-                    // Run the compiled project
-                    sh 'node dist/index.js' // Update if necessary, based on your output directory
-                }
-            }
-        }
-
-        stage('Push Artifact') {
-            when {
-                expression { currentBuild.currentResult == 'SUCCESS' }
-            }
-            steps {
-                script {
-                    // Configure Git with user details
-                    sh 'git config user.email "you@example.com"'
-                    sh 'git config user.name "Your Name"'
-                    sh 'git remote set-url origin https://${Token}@github.com/Prathm0025/TypeScript-Build.git'
-                    sh 'git add dist/*' // Add your build artifacts from the correct folder
-                    sh 'git commit -m "Add new build artifacts"'
-                    sh 'git push origin master'
-                }
-            }
-        }
-/*
-        stage('Rollback') {
-            when {
-                expression { currentBuild.currentResult == 'FAILURE' }
-            }
-            steps {
-                script {
-                    // Perform rollback actions here
-                    echo 'Rolling back to the previous build...'
-                    sh 'git checkout HEAD^' // Checkout the previous commit
-                }
-            }
-        }
-        */
     }
 
-    triggers {
-        pollSCM('H/5 * * * *') // Poll SCM every 5 minutes
-    }
-
-    options {
-        buildDiscarder(logRotator(numToKeepStr: '2')) // Keep the last 2 builds
+    post {
+        always {
+            // Clean up workspace after build
+            cleanWs()
+        }
     }
 }
