@@ -11,7 +11,7 @@ Run the following commands to install Java 18, Jenkins, Node.js 18, and configur
 #Make sure your Ubuntu system is updated:
 sudo apt update && sudo apt upgrade -y
 
-# Install Java 18
+# Install Java 17
 sudo apt install fontconfig openjdk-17-jre
 
 # Verify Java installation
