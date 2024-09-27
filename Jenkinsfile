@@ -76,10 +76,6 @@ pipeline {
         */
     }
 
-    triggers {
-        pollSCM('H/5 * * * *') // Poll SCM every 5 minutes
-    }
-
     options {
         buildDiscarder(logRotator(numToKeepStr: '2')) // Keep the last 2 builds
     }
