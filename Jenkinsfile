@@ -5,6 +5,23 @@ pipeline {
         Token = credentials('GITHUB_TOKEN')  // Fetch GitHub token from Jenkins credentials
     }
 
+    triggers {
+        GenericTrigger(
+            genericVariables: [
+                [key: 'pull_request_action', value: '$.action'],       // captures the pull request action (opened, closed, etc.)
+                [key: 'pull_request_number', value: '$.pull_request.number'], // captures the pull request number
+                [key: 'pull_request_merged', value: '$.pull_request.merged'], // captures whether the PR was merged (for closed PRs)
+                [key: 'pull_request_title', value: '$.pull_request.title']    // captures the title of the pull request
+            ],
+            causeString: 'Triggered by Pull Request: $pull_request_number',
+            token: 'your-webhook-token',  // Optional: If you set a secret token for the webhook
+            printContributedVariables: true,
+            printPostContent: true,
+            regexpFilterExpression: '',
+            regexpFilterText: ''
+        )
+    }
+
     stages {
         stage('Clone Repository') {
             steps {
@@ -69,14 +86,4 @@ pipeline {
                 script {
                     // Perform rollback actions here
                     echo 'Rolling back to the previous build...'
-                    sh 'git checkout HEAD^' // Checkout the previous commit
-                }
-            }
-        }
-        */
-    }
-
-    options {
-        buildDiscarder(logRotator(numToKeepStr: '2')) // Keep the last 2 builds
-    }
-}
+                    sh 'git checkout HEAD^' // Chec
