@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git url: 'https://github.com/Prathm0025/TypeScript-Build.git', branch: 'dev'
+                git url: 'https://github.com/Prathm0025/TypeScript-Build.git', branch: 'dev-build'
             }
         }
 
