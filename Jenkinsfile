@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        Token = credentials('GITHUB')  // Fetch GitHub token from Jenkins credentials
+        Token = credentials('GITHUB_Prathm0025')  // Fetch GitHub token from Jenkins credentials
     }
 
     stages {
