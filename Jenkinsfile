@@ -2,13 +2,13 @@ pipeline {
     agent any
 
     environment {
-        Token = credentials('GITHUB_Prathm0025')  // Fetch GitHub token from Jenkins credentials
+        Token = credentials('PRATHM_GITHUB_CRED')
     }
 
     stages {
         stage('Clone Repository') {
             steps {
-                git url: 'https://github.com/prathammore0025/TypeScript-Build.git', branch: 'dev'
+                git url: 'https://github.com/Prathm0025/TypeScript-Build.git', branch: 'dev-build'
             }
         }
 
@@ -53,10 +53,10 @@ pipeline {
                     // Configure Git with user details
                     sh 'git config user.email "you@example.com"'
                     sh 'git config user.name "Your Name"'
-                    sh 'git remote set-url origin https://${Token}@github.com/prathammore0025/TypeScript-Build.git'
+                    sh 'git remote set-url origin https://${Token}@github.com/Prathm0025/TypeScript-Build.git'
                     sh 'git add dist/*' // Add your build artifacts from the correct folder
                     sh 'git commit -m "Add new build artifacts"'
-                    sh 'git push origin dev'
+                    sh 'git push origin master'
                 }
             }
         }
